@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rag Day Registration Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #059669;
+            --secondary-hover: #047857;
+            --accent-color: #f59e0b;
+            --danger-color: #dc2626;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-accent: #f3f4f6;
+            --border-color: #e5e7eb;
+            --border-focus: #3b82f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--gradient-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            z-index: 9999;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #welcome-screen h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.3s;
+        }
+
+        #welcome-screen p {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.6s;
+        }
+
+        #welcome-screen .spinner {
+            margin-top: 2rem;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-brand i {
+            font-size: 1.8rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover,
+        .nav-menu li a.active {
+            color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-menu li a:hover::after,
+        .nav-menu li a.active::after {
+            width: 80%;
+        }
+        
+        .hamburger-menu-02 {
+            display: none;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            right: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--gradient-accent);
+            background: linear-gradient(135deg, #324d79 0%, #5ea18e 100%);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mobile-menu ul li a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: #ffffea;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu ul li a:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateX(10px);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: var(--gradient-accent);
+            margin: -2rem -0.6rem 3rem -0.6rem;
+            color: white;
+            border-radius: 0 0 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" fill="rgba(255,255,255,0.1)"><path d="M0,100 C300,0 700,200 1000,100 L1000,200 L0,200 Z"/></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-section p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card-header {
+            padding: 2rem;
+            text-align: center;
+            background: var(--gradient-primary);
+            color: white;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: white;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .ListofRegistered {
+            text-align: center;
+            padding-bottom: 1rem;
+        }
+        
+        .ListofRegistered a {
+            color: #6300b0;
+            font-size: 0.5rem;
+            font-weight: 400;
+        }
+        
+        /* Forms */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: var(--danger-color);
+            margin-left: 2px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-control:invalid {
+            border-color: var(--danger-color);
+        }
+
+        .form-control:disabled {
+            background-color: var(--bg-accent);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .file-input-button:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+            color: var(--primary-color);
+        }
+
+        .file-input-button.has-file {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.05);
+            color: var(--success-color);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Registration List */
+        .registration-list {
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .registration-list.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .list-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            min-width: 200px;
+        }
+
+        .registration-item {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .registration-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .item-header {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .item-id {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .item-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-paid {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-color);
+        }
+
+        .item-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .item-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .item-avatar:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        .placeholder-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .item-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .item-actions .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            min-width: 80px;
+        }
+
+        /* Invitation Card Styles */
+        .invitation-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .invitation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .invitation-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .invitation-header {
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .invitation-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .invitation-profile {
+            margin: 2rem 0;
+        }
+
+        .invitation-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: 0 auto 1rem;
+            object-fit: cover;
+        }
+
+        .invitation-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .invitation-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .invitation-field {
+            text-align: left;
+        }
+
+        .invitation-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .invitation-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .invitation-footer {
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .invitation-code-display {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .download-section {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            animation: slideInUp 0.3s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg, var(--border-color) 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .progress-bar:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-value {
+            background: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0 1rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hamburger-menu-02 {
+                display: block;
+            }
+
+            .hero-section {
+                padding: 2rem 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-body {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .item-info {
+                grid-template-columns: 1fr;
+            }
+
+            .item-actions {
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-filter {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .progress-bar {
+                width: 50px;
+                height: 50px;
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .progress-value {
+                width: 38px;
+                height: 38px;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hamburger-menu-02 {
+                width: 40px;
+                height: 32px;
+                padding: 6px;
+                background: #e4e4e4;
+                border-radius: 5px;
+                box-shadow: inset 1px 1px 4px #7f7f7f, 
+                            inset -1px -1px 4px #7f7f7f;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                cursor: pointer;
+                position: relative;
+                z-index: 1000;
+            }
+        
+            .bar {
+                width: 100%;
+                height: 3px;
+                background: var(--gradient-secondary);
+                transition: all 0.3s ease-in-out;
+                border-radius: 2px;
+            }
+
+            .hamburger-menu-02.active .bar:nth-child(1) {
+                transform: translateY(8.5px) rotate(-135deg);
+            }
+
+            .hamburger-menu-02.active .bar:nth-child(2) {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            .hamburger-menu-02.active .bar:nth-child(3) {
+                transform: translateY(-8.5px) rotate(135deg);
+            }
+            
+            main {
+                padding: 1rem 0.5rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .item-body {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .invitation-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .invitation-name {
+                font-size: 1.5rem;
+            }
+
+            .invitation-details {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            position: relative;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid var(--primary-color);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            border-left: 4px solid var(--success-color);
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen">
+        <h1><i class="fas fa-graduation-cap"></i> Welcome</h1>
+        <p>HAZERA-TAJU DEGREE COLLEGE<br>Rag Day Registration Portal</p>
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand" onclick="showPage('home')">
+                <i class="fas fa-university"></i>
+                HTDC
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('home')" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" onclick="showPage('admin')" class="nav-link"><i class="fas fa-user-tie"></i> Admin</a></li>
+                <li><a href="#" onclick="showPage('student')" class="nav-link"><i class="fas fa-user-graduate"></i> Student</a></li>
+                <li><a href="#" onclick="showPage('about')" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+            </ul>
+
+            <div class="hamburger-menu-02" onclick="toggleMobileMenu(this)">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <ul>
+                <li><a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" onclick="showPage('admin')"><i class="fas fa-user-tie"></i> Admin Registration</a></li>
+                <li><a href="#" onclick="showPage('student')"><i class="fas fa-user-graduate"></i> Student Registration</a></li>
+                <li><a href="#" onclick="showPage('about')"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+        </div>
+        
+    </nav>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home-page" class="page-content active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>Rag Day 2025</h1>
+                    <p>Join us for an unforgettable celebration as we honor the 25th batch</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="showPage('student')">
+                            <i class="fas fa-user-plus"></i> Register as Student
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('admin')">
+                            <i class="fas fa-cog"></i> Admin Panel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--warning-color);">
+                <div class="card-body" style="padding: 1.5rem;">
+                    <h3 style="color: var(--warning-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Important Payment Information
+                    </h3>
+                    <p style="margin-bottom: 0; font-size: 0.7rem; color: var(--text-primary);">
+                        <strong>Payment Number:</strong> +8801551-028036<br>
+                        Please send your registration fee to this number and include the transaction ID in your registration form.
+                    </p>
+                </div>
+                
+                <div style="font-size: 0.7rem; font-weight: 600; color: #ff2a15f0; padding: 5px 8px; margin: 0 10px 0 20px; border-left: 4px solid #272727; background: #ffffbfde;">
+                    বর্তমানে এটি পরীক্ষামূলক পর্যায়ে রয়েছে। তাই উপযুক্ত তথ্য দিয়ে Student Registration Form টা পূরণ করে সাবমিট করুন। এতে আপনার কাছে কনফার্মেশন মেইল যাচ্ছে কিনা আমাকে অবহিত করুন যেন কোডে সমস্যা থাকলে বুঝতে পারি এবং সমাধান করতে পারি। ধন্যবাদ।
+                </div>
+                
+                <div class="ListofRegistered">
+                    <a href="https://docs.google.com/spreadsheets/d/1iFHSTqWGNDugeLQaH-9w9b8RF17x_nbFxtZRH78V_Vk/edit?usp=drivesdk">See who has already registered!</a>
+                </div>
+            </div>
+
+
+
+<div class="card" style="margin: 3rem 0; border: 2px solid var(--primary-color);">
+    <div class="card-header" style="background: var(--gradient-primary); padding: 2.5rem 2rem;">
+        <h2 style="font-size: 1.8rem;"><i class="fas fa-rocket"></i> Your Rag Day Registration Journey</h2>
+        <p style="font-size: 1.1rem; font-weight: 300; margin-top: 0.5rem;">Secure your Invitation Card with these easy steps!</p>
+    </div>
+    <div class="card-body" style="padding: 2rem 1rem;">
+        <ol style="padding-left: 1rem; margin: 0; font-size: 0.8rem; line-height: 1.6; list-style-type: none;">
+            <li style="margin-bottom: 1rem;">
+                <span style="font-size: 1.2rem; font-weight: 700; color: var(--accent-color);">Step 1:
+                </span></br>
+                <div style="margin: 1rem; border-left: 2px solid var(--accent-color); background: linear-gradient(90deg, #ffffeaf2 0%, #ffffea11 100%); border-radius: 5%; padding-left: 0.8rem;">
+                <i class="fas fa-hand-holding-usd" style="color: var(--accent-color);"></i> <big><b>Secure Payment:</b></big> Send the registration fee to the designated number from the Home page notice and carefully note down the <b>Transaction ID</b>.
+                </div>
+            </li>
+            <li style="margin-bottom: 1rem;">
+                <span style="font-size: 1.2rem; font-weight: 700; color: var(--accent-color);">Step 2:
+                </span></br>
+                <div style="margin: 1rem; border-left: 2px solid var(--accent-color); background: linear-gradient(90deg, #ffffeaf2 0%, #ffffea11 100%); border-radius: 5%; padding-left: 0.8rem;">
+                <i class="fas fa-user-plus" style="color: var(--accent-color);"></i> <big><b>Smart Registration:</b></big>
+                Navigate to the <b>Student Registration</b> page and accurately fill in all details, including your <b>Transaction ID</b>. <strong style="color: var(--primary-hover);">Uploading a recent profile picture</strong> is mandatory.
+                </div>
+            </li>
+            <li style="margin-bottom: 1rem;">
+                <span style="font-size: 1.2rem; font-weight: 700; color: var(--accent-color); margin-right: 0.5rem;">Step 3:
+                </span></br>
+                <div style="margin: 1rem; border-left: 2px solid var(--accent-color); background: linear-gradient(90deg, #ffffeaf2 0%, #ffffea11 100%); border-radius: 5%; padding-left: 0.8rem;">
+                <i class="fas fa-paper-plane" style="color: var(--accent-color);"></i> <big><b>Code & Confirmation:</b></big>
+                Immediately upon submission, your <strong style="color: var(--danger-color);">personal Special Code</strong> will be sent to your registered email address. Please check your inbox and save this code.
+                </div>
+            </li>
+            <li style="margin-bottom: 1rem;">
+                <span style="font-size: 1.2rem; font-weight: 700; color: var(--accent-color); margin-right: 0.5rem;">Step 4:
+                </span></br>
+                
+                <div style="margin: 1rem; border-left: 2px solid var(--accent-color); background: linear-gradient(90deg, #ffffeaf2 0%, #ffffea11 100%); border-radius: 5%; padding-left: 0.8rem;">
+                <i class="fas fa-ticket-alt" style="color: var(--accent-color);"></i> <big><b>Download Your Card:</b></big>
+                Find your card in the list below. Click the <b>Download Card</b> button, enter the <b>Special Code</b> (from your email), and download your official <strong style="color: var(--secondary-color);">unique Invitation Card in JPG format</strong>.
+                </div>
+            </li>
+        </ol>
+        <p style="margin-top: 2rem; background: var(--bg-accent); padding: 1rem; border-radius: var(--radius-md); font-size: 0.9rem; text-align: center;">
+            <i class="fas fa-lock" style="color: var(--danger-color);"> <b> Critical Warning:</b></i> Your <b>Special Code</b> is private. You cannot download the card without it.
+        </p>
+    </div>
+</div>
+
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" id="totalStudents">0</div>
+                    <div class="stat-label">Students Registered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-number" id="totalAdmins">0</div>
+                    <div class="stat-label">Admin Registrations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="stat-number" id="totalPaid">0</div>
+                    <div class="stat-label">Payments Received</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Batch Year</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Quick Actions</h2>
+                    <p>Choose your registration type to get started</p>
+                </div>
+                <div class="card-body">
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="showPage('student')">
+                            <i class="fas fa-user-graduate"></i>
+                            Student Registration
+                        </button>
+                        <button class="btn btn-primary" onclick="showPage('admin')">
+                            <i class="fas fa-user-tie"></i>
+                            Admin Registration
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('about')">
+                            <i class="fas fa-info-circle"></i>
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Registration Page -->
+        <div id="admin-page" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-tie"></i> Admin Registration</h2>
+                    <p>Register administrative staff for Rag Day 2025</p>
+                </div>
+                <div class="card-body">
+                    <form id="adminForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="adminName">Full Name <span class="required">*</span></label>
+                                <input type="text" id="adminName" class="form-control" placeholder="Enter full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminUniqueId">Unique ID <span class="required">*</span></label>
+                                <input type="text" id="adminUniqueId" class="form-control" placeholder="e.g., Sci-A-123" required>
+                                <small style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                                    Format: Division-Section-Roll (e.g., Sci-A-123)
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminCode">Admin Code <span class="required">*</span></label>
+                                <input type="password" id="adminCode" class="form-control" placeholder="Enter admin code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminEmail">Email <span class="required">*</span></label>
+                                <input type="email" id="adminEmail" class="form-control" placeholder="Enter email address" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="adminMobile">Mobile Number <span class="required">*</span></label>
+                                <input type="tel" id="adminMobile" class="form-control" placeholder="Enter mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminPaymentMethod">Payment Method</label>
+                                <select id="adminPaymentMethod" class="form-control">
+                                    <option value="None">Not Paid Yet</option>
+                                    <option value="BKash">BKash</option>
+                                    <option value="Nagad">Nagad</option>
+                                    <option value="Upay">Upay</option>
+                                    <option value="Rocket">Rocket</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminTransactionId">Transaction ID</label>
+                                <input type="text" id="adminTransactionId" class="form-control" placeholder="Enter transaction ID" disabled>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Register Admin
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-undo"></i>
+                                Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Registration List -->
+            <div id="adminList" class="registration-list">
+                <div class="list-header">
+                    <h3>Registered Admins</h3>
+                    <div class="search-filter">
+                        <input type="text" class="search-input" placeholder="Search admins..." id="adminSearch">
+                        <button class="btn btn-secondary" onclick="printAllItems('admin')" id="adminPrintAllBtn">
+                            <i class="fas fa-print"></i>
+                            Print All
+                        </button>
+                    </div>
+                </div>
+                <div id="adminItems"></div>
+            </div>
+        </div>
+
+        <!-- Student Registration Page -->
+        <div id="student-page" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-graduate"></i> Student Registration</h2>
+                    <p>Register for Rag Day 2025 - Create lasting memories!</p>
+                </div>
+                <div class="card-body">
+                    <form id="studentForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="studentName">Full Name <span class="required">*</span></label>
+                                <input type="text" id="studentName" class="form-control" placeholder="Enter full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentProfilePic">Profile Picture</label>
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="studentProfilePic" class="file-input" accept="image/*">
+                                    <label for="studentProfilePic" class="file-input-button">
+                                        <i class="fas fa-camera"></i>
+                                        <span class="file-text">Choose profile picture</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentRoll">Roll Number <span class="required">*</span></label>
+                                <input type="number" id="studentRoll" class="form-control" placeholder="Enter roll number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentDivision">Division <span class="required">*</span></label>
+                                <select id="studentDivision" class="form-control" required>
+                                    <option value="">Select Division</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Commerce">Commerce</option>
+                                    <option value="Arts">Arts</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentSection">Section <span class="required">*</span></label>
+                                <select id="studentSection" class="form-control" required>
+                                    <option value="">Select Section</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="studentEmail">Email <span class="required">*</span></label>
+                                <input type="email" id="studentEmail" class="form-control" placeholder="Enter email address" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="studentMobile">Mobile Number <span class="required">*</span></label>
+                                <input type="tel" id="studentMobile" class="form-control" placeholder="Enter mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentPaymentMethod">Payment Method</label>
+                                <select id="studentPaymentMethod" class="form-control">
+                                    <option value="None">Not Paid Yet</option>
+                                    <option value="BKash">BKash</option>
+                                    <option value="Nagad">Nagad</option>
+                                    <option value="Upay">Upay</option>
+                                    <option value="Rocket">Rocket</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentTransactionId">Transaction ID</label>
+                                <input type="text" id="studentTransactionId" class="form-control" placeholder="Enter transaction ID" disabled>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Register Student
+                            </button>
+                            <button type="reset" class="btn btn-outline">
+                                <i class="fas fa-undo"></i>
+                                Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Student Registration List -->
+            <div id="studentList" class="registration-list">
+                <div class="list-header">
+                    <h3>Registered Students</h3>
+                    <div class="search-filter">
+                        <input type="text" class="search-input" placeholder="Search students..." id="studentSearch">
+                        <button class="btn btn-secondary" onclick="printAllItems('student')" id="studentPrintAllBtn">
+                            <i class="fas fa-print"></i>
+                            Print All
+                        </button>
+                    </div>
+                </div>
+                <div id="studentItems"></div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about-page" class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-university"></i> About HAZERA-TAJU DEGREE COLLEGE</h2>
+                    <p>Excellence in Education Since Years</p>
+                </div>
+                <div class="card-body">
+                    <div style="line-height: 1.4; font-size: 0.8rem;">
+                        <p style="margin-bottom: 1.5rem;">
+                            Welcome to Hazera-Taju Degree College! We are committed to providing quality education and fostering a dynamic learning environment for our students. Our college has a rich history of academic excellence and community engagement.
+                        </p>
+                        
+                        <p style="margin-bottom: 1.5rem;">
+                            We believe in nurturing well-rounded individuals who are prepared to face the challenges of the future. Our dedicated faculty and staff work tirelessly to ensure that every student receives the support and guidance they need to succeed.
+                        </p>
+                        
+                        <h3 style="color: var(--primary-color); margin: 2rem 0 1rem 0; font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-graduation-cap"></i>
+                            About Rag Day 2025
+                        </h3>
+                        
+                        <p style="margin-bottom: 1.5rem;">
+                            The "Rag Day - 25 Batch" is a special event organized to celebrate the journey of our graduating students, marking the end of their academic chapter and the beginning of a new one. It's a day for fun, reminiscence, and creating lasting memories.
+                        </p>
+                        
+                        <p style="margin-bottom: 1.5rem;">
+                            This celebration brings together students, faculty, and staff in a joyous atmosphere where we honor achievements, share experiences, and wish our graduates success in their future endeavors.
+                        </p>
+                        
+                        <div style="background: var(--bg-secondary); font-size: 0.8rem; padding: 1.5rem; border-radius: var(--radius-lg); margin: 2rem 0;">
+                            <h4 style="color: var(--secondary-color); margin-bottom: 1rem;">
+                                <i class="fas fa-phone"></i>
+                                Contact Information
+                            </h4>
+                            <div style="padding: 10px; margin: 0 0 0 20px; border-left: 3px solid var(--secondary-color); background: linear-gradient(90deg, #ffffeaf2 0%, #ffffea11 100%); border-radius: 5%; line-height: 0.7; font-size: 0.7rem;">
+                                <p style="margin-bottom: 0.5rem;">
+                                    <strong>Email:</strong> info@hazerataju.edu.bd
+                                </p>
+                                <p style="margin-bottom: 0.5rem;">
+                                    <strong>Phone:</strong> +8801551-028036
+                                </p>
+                                <p style="margin-bottom: 0;">
+                                    <strong>Developer:</strong> <a href="mailto:rajumeherab2006@gmail.com" style="color: var(--primary-color);">MK. Raju</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar" onclick="scrollToTop()">
+        <div class="progress-value" id="progressValue">0%</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="mailto:rajumeherab2006@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    Email
+                </a>
+                <a href="https://wa.me/qr/I5IOAVUHNIDKA1">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </a>
+                <a href="https://www.facebook.com/share/1CuRKk1RkW/">
+                    <i class="fab fa-facebook"></i>
+                    Facebook
+                </a>
+            </div>
+            <p class="footer-text">Copyright © 2025 by MK.RAJU | All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Code Verification Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-lock"></i> Enter Verification Code</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Enter your special code to download the invitation card</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="verificationCode">Verification Code</label>
+                    <input type="text" id="verificationCode" class="form-control" placeholder="Enter code" style="text-transform: uppercase;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCodeModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-primary" onclick="verifyAndDownload()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+// ====== Configuration ======
+const ADMIN_CODE = 'HTDC2026AD';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvMU-eEqK74Rug6OfaLVHHIBVx_GnixkMPTX_DAGryl9mZgE0VQDbNsKaW7-uInsuJzA/exec'; // আপনার Web App URL এখানে দিন
+
+// Global variables
+let registeredAdmins = JSON.parse(localStorage.getItem('registeredAdmins')) || [];
+let registeredStudents = JSON.parse(localStorage.getItem('registeredStudents')) || [];
+let editingItem = null;
+let currentInvitationData = null;
+
+// Generate special code for student
+function generateSpecialCode(name, division, section, roll) {
+    const nameParts = name.trim().split(' ');
+    const initials = nameParts.map(part => part.charAt(0).toUpperCase()).join('');
+    const divisionCode = division.substring(0, 2).toUpperCase();
+    const sectionCode = section.toUpperCase();
+    const specialCode = `${sectionCode}${initials}${roll}${divisionCode}MK`;
+    return specialCode;
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+    setupEventListeners();
+    updateStats();
+    
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.display = 'none';
+        }, 800);
+    }, 2000);
+});
+
+function initializeApp() {
+    toggleTransactionField('admin');
+    toggleTransactionField('student');
+    renderRegistrationList('admin');
+    renderRegistrationList('student');
+    setupFileInput();
+    updateScrollProgress();
+    
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        updateScrollProgress();
+    });
+}
+
+function setupEventListeners() {
+    document.getElementById('adminForm').addEventListener('submit', handleAdminSubmit);
+    document.getElementById('studentForm').addEventListener('submit', handleStudentSubmit);
+    document.getElementById('adminPaymentMethod').addEventListener('change', () => toggleTransactionField('admin'));
+    document.getElementById('studentPaymentMethod').addEventListener('change', () => toggleTransactionField('student'));
+    document.getElementById('adminSearch').addEventListener('input', () => filterRegistrations('admin'));
+    document.getElementById('studentSearch').addEventListener('input', () => filterRegistrations('student'));
+    
+    document.getElementById('adminForm').addEventListener('reset', () => {
+        setTimeout(() => toggleTransactionField('admin'), 0);
+    });
+    document.getElementById('studentForm').addEventListener('reset', () => {
+        setTimeout(() => {
+            toggleTransactionField('student');
+            resetFileInput();
+        }, 0);
+    });
+}
+
+function setupFileInput() {
+    const fileInput = document.getElementById('studentProfilePic');
+    const fileButton = fileInput.nextElementSibling;
+    const fileText = fileButton.querySelector('.file-text');
+    
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            fileText.textContent = this.files[0].name;
+            fileButton.classList.add('has-file');
+        } else {
+            fileText.textContent = 'Choose profile picture';
+            fileButton.classList.remove('has-file');
+        }
+    });
+}
+
+function resetFileInput() {
+    const fileInput = document.getElementById('studentProfilePic');
+    const fileButton = fileInput.nextElementSibling;
+    const fileText = fileButton.querySelector('.file-text');
+    
+    fileText.textContent = 'Choose profile picture';
+    fileButton.classList.remove('has-file');
+}
+
+function showPage(pageId) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger-menu-02');
+    if (mobileMenu && mobileMenu.classList.contains('active')) {
+        mobileMenu.classList.remove('active');
+        if (hamburger) hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    const desktopLink = document.querySelector(`.nav-menu [onclick="showPage('${pageId}')"]`);
+    const mobileLink = document.querySelector(`.mobile-menu [onclick*="showPage('${pageId}')"]`);
+    
+    if (desktopLink) desktopLink.classList.add('active');
+    if (mobileLink) mobileLink.classList.add('active');
+    
+    document.querySelectorAll('.page-content').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    const targetPage = document.getElementById(pageId + '-page');
+    if (targetPage) {
+        targetPage.classList.add('active');
+        
+        if (pageId === 'admin') {
+            const adminList = document.getElementById('adminList');
+            if (adminList) {
+                adminList.classList.add('active');
+                renderRegistrationList('admin');
+            }
+        } else if (pageId === 'student') {
+            const studentList = document.getElementById('studentList');
+            if (studentList) {
+                studentList.classList.add('active');
+                renderRegistrationList('student');
+            }
+        }
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function toggleMobileMenu(menuButton) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburgerBtn = menuButton || document.querySelector('.hamburger-menu-02');
+    
+    if (!mobileMenu || !hamburgerBtn) return;
+    
+    const isActive = mobileMenu.classList.contains('active');
+    
+    if (isActive) {
+        mobileMenu.classList.remove('active');
+        hamburgerBtn.classList.remove('active');
+        document.body.style.overflow = '';
+    } else {
+        mobileMenu.classList.add('active');
+        hamburgerBtn.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function toggleTransactionField(type) {
+    const paymentSelect = document.getElementById(type + 'PaymentMethod');
+    const transactionInput = document.getElementById(type + 'TransactionId');
+    
+    if (paymentSelect.value === 'None') {
+        transactionInput.disabled = true;
+        transactionInput.value = '';
+    } else {
+        transactionInput.disabled = false;
+    }
+}
+
+// ====== ADMIN FORM SUBMISSION ======
+async function handleAdminSubmit(e) {
+    e.preventDefault();
+    
+    const adminCode = document.getElementById('adminCode').value.trim();
+    
+    if (adminCode !== ADMIN_CODE) {
+        showToast('Invalid admin code! Access denied.', 'error');
+        return;
+    }
+    
+    const formData = {
+        name: document.getElementById('adminName').value.trim(),
+        email: document.getElementById('adminEmail').value.trim(),
+        uniqueId: document.getElementById('adminUniqueId').value.trim(),
+        mobileNo: document.getElementById('adminMobile').value.trim(),
+        paidBy: document.getElementById('adminPaymentMethod').value,
+        transactionId: document.getElementById('adminTransactionId').value.trim(),
+        dateTime: new Date().toLocaleString(),
+        profilePic: ''
+    };
+    
+    if (!validateAdminData(formData)) return;
+    
+    const uniqueIdParts = formData.uniqueId.split('-');
+    if (uniqueIdParts.length === 3) {
+        formData.division = uniqueIdParts[0];
+        formData.section = uniqueIdParts[1];
+        formData.roll = uniqueIdParts[2];
+    }
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    
+    try {
+        const response = await sendToGoogleSheets(formData, 'admin');
+        
+        if (response.success) {
+            if (editingItem && editingItem.type === 'admin') {
+                registeredAdmins[editingItem.index] = formData;
+                editingItem = null;
+                showToast('Admin updated successfully!', 'success');
+            } else {
+                registeredAdmins.push(formData);
+                showToast('Admin registered successfully! Confirmation email sent.', 'success');
+            }
+            
+            saveToLocalStorage('admins');
+            renderRegistrationList('admin');
+            updateStats();
+            
+            document.getElementById('adminForm').reset();
+            toggleTransactionField('admin');
+        } else {
+            throw new Error(response.message || 'Registration failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error submitting registration: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+}
+
+// ====== STUDENT FORM SUBMISSION ======
+async function handleStudentSubmit(e) {
+    e.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('studentName').value.trim(),
+        email: document.getElementById('studentEmail').value.trim(),
+        roll: document.getElementById('studentRoll').value.trim(),
+        division: document.getElementById('studentDivision').value,
+        section: document.getElementById('studentSection').value,
+        mobileNo: document.getElementById('studentMobile').value.trim(),
+        paidBy: document.getElementById('studentPaymentMethod').value,
+        transactionId: document.getElementById('studentTransactionId').value.trim(),
+        dateTime: new Date().toLocaleString(),
+        profilePic: ''
+    };
+    
+    if (!validateStudentData(formData)) return;
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    
+    const fileInput = document.getElementById('studentProfilePic');
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            formData.profilePic = e.target.result;
+            await saveStudentData(formData, submitBtn, originalBtnText);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        await saveStudentData(formData, submitBtn, originalBtnText);
+    }
+}
+
+async function saveStudentData(formData, submitBtn, originalBtnText) {
+    try {
+        const specialCode = generateSpecialCode(formData.name, formData.division, formData.section, formData.roll);
+        formData.specialCode = specialCode;
+        
+        const response = await sendToGoogleSheets(formData, 'student');
+        
+        if (response.success) {
+            const codeKey = `specialCode_${formData.email}`;
+            localStorage.setItem(codeKey, specialCode);
+            
+            if (editingItem && editingItem.type === 'student') {
+                registeredStudents[editingItem.index] = formData;
+                editingItem = null;
+                showToast('Student updated successfully!', 'success');
+            } else {
+                registeredStudents.push(formData);
+                showToast('Student registered successfully! Confirmation email sent.', 'success');
+                // showInvitationCard(formData); // REMOVED - Card now shows in list
+            }
+            
+            saveToLocalStorage('students');
+            renderRegistrationList('student');
+            updateStats();
+            
+            document.getElementById('studentForm').reset();
+            toggleTransactionField('student');
+            resetFileInput();
+        } else {
+            throw new Error(response.message || 'Registration failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error submitting registration: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+}
+
+// ====== SEND TO GOOGLE SHEETS ======
+async function sendToGoogleSheets(data, type) {
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: type,
+                ...data
+            })
+        });
+        
+        return { success: true, message: 'Data sent successfully' };
+    } catch (error) {
+        console.error('Google Sheets error:', error);
+        throw error;
+    }
+}
+
+function validateAdminData(data) {
+    if (!data.name || !data.email || !data.uniqueId || !data.mobileNo) {
+        showToast('Please fill in all required fields.', 'error');
+        return false;
+    }
+    
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(data.email)) {
+        showToast('Please enter a valid email address.', 'error');
+        return false;
+    }
+    
+    const uniqueIdPattern = /^[A-Za-z]+-[A-Za-z]+-\d+$/;
+    if (!uniqueIdPattern.test(data.uniqueId)) {
+        showToast('Unique ID must be in format: Division-Section-Roll (e.g., Sci-A-123)', 'error');
+        return false;
+    }
+    
+    if (data.paidBy !== 'None' && !data.transactionId) {
+        showToast('Transaction ID is required when payment method is selected.', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+function validateStudentData(data) {
+    if (!data.name || !data.email || !data.roll || !data.division || !data.section || !data.mobileNo) {
+        showToast('Please fill in all required fields.', 'error');
+        return false;
+    }
+    
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(data.email)) {
+        showToast('Please enter a valid email address.', 'error');
+        return false;
+    }
+    
+    if (data.paidBy !== 'None' && !data.transactionId) {
+        showToast('Transaction ID is required when payment method is selected.', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+// ====== INVITATION CARD (MODIFIED FOR LIST) ======
+
+// ShowInvitationCard function is removed as requested.
+
+function downloadInvitationCard(index, type) {
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    currentInvitationData = dataArray[index];
+
+    // For admin, we don't allow general download, only for student
+    if (type === 'admin') {
+        showToast('Invitation download is only available for registered students.', 'warning');
+        return;
+    }
+    
+    const codeKey = `specialCode_${currentInvitationData.email}`;
+    const savedCode = localStorage.getItem(codeKey);
+    
+    if (!savedCode) {
+        showToast('Special code not found. Please register again.', 'error');
+        return;
+    }
+    
+    document.getElementById('codeModal').classList.add('active');
+}
+
+function closeCodeModal() {
+    document.getElementById('codeModal').classList.remove('active');
+    document.getElementById('verificationCode').value = '';
+}
+
+async function verifyAndDownload() {
+    const enteredCode = document.getElementById('verificationCode').value.trim().toUpperCase();
+    const codeKey = `specialCode_${currentInvitationData.email}`;
+    const savedCode = localStorage.getItem(codeKey);
+    
+    if (enteredCode === savedCode) {
+        closeCodeModal();
+        showToast('Code verified! Preparing download...', 'success');
+        await createInvitationImage();
+    } else {
+        showToast('Invalid code. Please try again.', 'error');
+    }
+}
+
+async function createInvitationImage() {
+    try {
+        const data = currentInvitationData;
+        showToast('Preparing your VIP invitation card...', 'warning');
+        
+        // Create a high-resolution card for download (2000x1000 for 2:1 ratio)
+        const downloadCard = document.createElement('div');
+        downloadCard.style.cssText = `
+            position: fixed;
+            left: -15000px;
+            top: 0;
+            width: 2000px;
+            height: 1000px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Inter', Arial, sans-serif;
+        `;
+        
+        const isPaid = data.paidBy !== 'None';
+        const avatarHtml = data.profilePic ? 
+            `<img src="${data.profilePic}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` :
+            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 6rem; font-weight: 700; color: #d4af37;">
+                ${data.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+            </div>`;
+        
+        downloadCard.innerHTML = `
+            <!-- Background Pattern -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.15;">
+                <div style="position: absolute; top: 50%; left: 15%; width: 600px; height: 600px; background: radial-gradient(circle, #d4af37 0%, transparent 70%); transform: translateY(-50%);"></div>
+                <div style="position: absolute; top: 20%; right: 15%; width: 400px; height: 400px; background: radial-gradient(circle, #d4af37 0%, transparent 70%);"></div>
+                <div style="position: absolute; bottom: 20%; right: 30%; width: 500px; height: 500px; background: radial-gradient(circle, #8a2be2 0%, transparent 70%);"></div>
+            </div>
+            
+            <!-- Gold Border -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 6px solid #d4af37; pointer-events: none; z-index: 2;"></div>
+            
+            <!-- Top Banner -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 100px; background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%); display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);">
+                <span style="font-size: 2rem; font-weight: 800; letter-spacing: 8px; color: #1a1a2e; text-shadow: 2px 2px 4px rgba(255,255,255,0.3);">✨ EXCLUSIVE VIP INVITATION ✨</span>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="position: relative; z-index: 5; display: flex; height: 100%; padding: 120px 60px 90px 60px;">
+                
+                <!-- Left Section -->
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 40px; border-right: 4px solid rgba(212, 175, 55, 0.4);">
+                    
+                    <!-- Profile Image -->
+                    <div style="width: 500px; height: 500px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #ffd700); padding: 10px; box-shadow: 0 30px 80px rgba(212, 175, 55, 0.6); margin-bottom: 40px;">
+                        <div style="width: 100%; height: 100%; border-radius: 50%; background: #1a1a2e; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 6px solid rgba(212, 175, 55, 0.3);">
+                            ${avatarHtml}
+                        </div>
+                    </div>
+                    
+                    <!-- Name Box -->
+                    <div style="text-align: center; background: rgba(212, 175, 55, 0.15); padding: 30px 50px; border-radius: 30px; border: 2px solid rgba(212, 175, 55, 0.3); width: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                        <h2 style="margin: 0 0 16px 0; font-size: 3.2rem; font-weight: 800; color: #ffd700; letter-spacing: 2px; text-shadow: 0 0 40px rgba(212, 175, 55, 0.8); line-height: 1.2;">${data.name}</h2>
+                        <div style="display: inline-block; background: linear-gradient(135deg, #d4af37, #ffd700); color: #1a1a2e; padding: 10px 40px; border-radius: 40px; font-size: 1.7rem; font-weight: 700; letter-spacing: 2px; box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);">🎓 BATCH 25</div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Right Section -->
+                <div style="flex: 1.5; display: flex; flex-direction: column; padding: 0 40px;">
+                    
+                    <!-- Event Header -->
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="margin: 0; font-size: 4.4rem; font-weight: 900; color: #ffd700; letter-spacing: 6px; text-shadow: 0 0 60px rgba(212, 175, 55, 0.8); line-height: 1.1;">🎓 RAG DAY 2025</h1>
+                        <p style="margin: 16px 0 0 0; font-size: 2.2rem; color: #d4af37; font-weight: 700; letter-spacing: 4px;">HAZERA-TAJU DEGREE COLLEGE</p>
+                    </div>
+                    
+                    <!-- Details Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 30px;">
+                        
+                        <!-- Email -->
+                        <div style="background: rgba(212, 175, 55, 0.12); padding: 24px; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+                            <div style="font-size: 1.4rem; color: #d4af37; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">📧 EMAIL</div>
+                            <div style="font-size: 1.6rem; color: #ffffff; font-weight: 600; word-break: break-all; line-height: 1.4;">${data.email}</div>
+                        </div>
+                        
+                        <!-- Mobile -->
+                        <div style="background: rgba(212, 175, 55, 0.12); padding: 24px; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+                            <div style="font-size: 1.4rem; color: #d4af37; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">📱 MOBILE</div>
+                            <div style="font-size: 1.9rem; color: #ffffff; font-weight: 700;">${data.mobileNo}</div>
+                        </div>
+                        
+                        <!-- Roll -->
+                        <div style="background: rgba(212, 175, 55, 0.12); padding: 24px; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+                            <div style="font-size: 1.4rem; color: #d4af37; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">🎯 ROLL NUMBER</div>
+                            <div style="font-size: 1.9rem; color: #ffffff; font-weight: 700;">${data.roll}</div>
+                        </div>
+                        
+                        <!-- Division/Section -->
+                        <div style="background: rgba(212, 175, 55, 0.12); padding: 24px; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+                            <div style="font-size: 1.4rem; color: #d4af37; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">📚 DIVISION / SECTION</div>
+                            <div style="font-size: 1.9rem; color: #ffffff; font-weight: 700;">${data.division} / ${data.section}</div>
+                        </div>
+                        
+                        <!-- Payment Status -->
+                        <div style="background: ${isPaid ? 'rgba(46, 213, 115, 0.25)' : 'rgba(255, 159, 67, 0.25)'}; padding: 24px; border-radius: 24px; border: 4px solid ${isPaid ? 'rgba(46, 213, 115, 0.6)' : 'rgba(255, 159, 67, 0.6)'}; box-shadow: 0 0 40px ${isPaid ? 'rgba(46, 213, 115, 0.3)' : 'rgba(255, 159, 67, 0.3)'};">
+                            <div style="font-size: 1.4rem; color: ${isPaid ? '#2ed573' : '#ff9f43'}; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">💳 PAYMENT STATUS</div>
+                            <div style="font-size: 2.1rem; color: ${isPaid ? '#2ed573' : '#ff9f43'}; font-weight: 800;">${isPaid ? '✅ PAID' : '⏳ PENDING'}</div>
+                        </div>
+                        
+                        <!-- Transaction ID -->
+                        <div style="background: rgba(212, 175, 55, 0.12); padding: 24px; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+                            <div style="font-size: 1.4rem; color: #d4af37; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">🔖 TRANSACTION ID</div>
+                            <div style="font-size: 1.6rem; color: #ffffff; font-weight: 600; word-break: break-all; line-height: 1.4;">${data.transactionId || 'N/A'}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Registration Date -->
+                    <div style="text-align: center; margin-top: auto; padding: 16px; background: rgba(212, 175, 55, 0.08); border-radius: 16px; border: 2px solid rgba(212, 175, 55, 0.2);">
+                        <span style="font-size: 1.4rem; color: #d4af37; font-weight: 600;">📅 Registered: ${data.dateTime}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Banner -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 70px; background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%); display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 -8px 30px rgba(212, 175, 55, 0.5);">
+                <span style="font-size: 1.5rem; font-weight: 700; color: #1a1a2e; letter-spacing: 4px;">🎉 WE LOOK FORWARD TO CELEBRATING WITH YOU 🎉</span>
+            </div>
+        `;
+        
+        document.body.appendChild(downloadCard);
+        
+        // Wait for rendering and images to load
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // Capture with html2canvas at high resolution
+        const canvas = await html2canvas(downloadCard, {
+            backgroundColor: '#1a1a2e',
+            scale: 2, // 4000x2000 final resolution
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+            width: 2000,
+            height: 1000,
+            windowWidth: 2000,
+            windowHeight: 1000
+        });
+        
+        document.body.removeChild(downloadCard);
+        
+        // Download as high-quality JPG
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `HTDC_RagDay2025_${data.name.replace(/\s+/g, '_')}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('✅ High-quality invitation card downloaded!', 'success');
+        }, 'image/jpeg', 0.98); // Higher quality JPG
+        
+    } catch (error) {
+        console.error('Download error:', error);
+        showToast('❌ Error: ' + error.message, 'error');
+    }
+}
+
+
+// ====== REGISTRATION LIST - MODIFIED TO SHOW CARDS ======
+function renderRegistrationList(type) {
+    const container = document.getElementById(type + 'Items');
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    
+    container.innerHTML = '';
+    
+    if (dataArray.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>No ${type}s registered yet</h3>
+                <p>Be the first to register!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    dataArray.forEach((item, index) => {
+        const itemElement = createRegistrationItem(item, index, type);
+        container.appendChild(itemElement);
+    });
+    
+    const printBtn = document.getElementById(type + 'PrintAllBtn');
+    printBtn.disabled = dataArray.length === 0;
+}
+
+// MODIFIED function to use Invitation Card HTML
+function createRegistrationItem(data, index, type) {
+    const div = document.createElement('div');
+    // Using registration-item class but will override styles for card layout
+    div.className = 'registration-item ' + (type === 'admin' ? 'admin-card-list' : 'student-card-list'); 
+    div.dataset.index = index;
+    div.dataset.type = type;
+    
+    const uniqueId = type === 'admin' ? data.uniqueId : `${data.division}-${data.section}-${data.roll}`;
+    const isPaid = data.paidBy !== 'None';
+    
+    const avatarHtml = data.profilePic ? 
+        `<img src="${data.profilePic}" alt="Profile" class="invitation-avatar">` :
+        `<div class="invitation-avatar" style="background: white; color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; width: 150px; height: 150px; border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 0 auto 1rem;">
+            ${data.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+        </div>`;
+        
+    // The core Invitation Card structure replaces the original list item HTML
+    div.innerHTML = `
+        <div class="vip-invitation-card" style="
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 2.5 / 1;
+    margin: 2rem auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 25px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+">
+    <!-- Animated Luxury Background -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 85% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 70% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+        z-index: 1;
+    "></div>
+
+    <!-- Gold Border Frame -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 3px solid;
+        border-image: linear-gradient(135deg, #d4af37, #ffd700, #d4af37, #ffd700) 1;
+        z-index: 2;
+        pointer-events: none;
+    "></div>
+
+    <!-- Top Gold Banner -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+    ">
+        <span style="
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #1a1a2e;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        ">✨ EXCLUSIVE VIP INVITATION ✨</span>
+    </div>
+
+    <!-- Main Content Container -->
+    <div style="
+        position: relative;
+        z-index: 5;
+        display: flex;
+        height: 100%;
+        padding: 70px 30px 20px 30px;
+    ">
+        
+        <!-- Left Section - Profile -->
+        <div style="
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            border-right: 2px solid rgba(212, 175, 55, 0.3);
+        ">
+            <!-- Profile Image Container -->
+            <div style="
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #d4af37, #ffd700);
+                padding: 5px;
+                box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+                margin-bottom: 20px;
+            ">
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    background: #1a1a2e;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    border: 3px solid rgba(212, 175, 55, 0.3);
+                ">
+                    ${type === 'student' ? avatarHtml : '<i class="fas fa-user-tie" style="font-size: 5rem; color: #d4af37;"></i>'}
+                </div>
+            </div>
+
+            <!-- Name Section -->
+            <div style="
+                text-align: center;
+                background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 215, 0, 0.05));
+                padding: 15px 25px;
+                border-radius: 15px;
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                backdrop-filter: blur(10px);
+                width: 100%;
+            ">
+                <h2 style="
+                    margin: 0 0 8px 0;
+                    font-size: 1.6rem;
+                    font-weight: 800;
+                    background: linear-gradient(135deg, #ffd700, #d4af37);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: 1px;
+                    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+                ">${data.name}</h2>
+                <div style="
+                    display: inline-block;
+                    background: linear-gradient(135deg, #d4af37, #ffd700);
+                    color: #1a1a2e;
+                    padding: 5px 20px;
+                    border-radius: 20px;
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+                ">${type === 'student' ? '🎓 BATCH 25' : '💼 ADMIN STAFF'}</div>
+            </div>
+
+        </div>
+
+        <!-- Right Section - Details -->
+        <div style="
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px;
+            overflow-y: auto;
+        ">
+            <!-- Event Header -->
+            <div style="
+                text-align: center;
+                margin-bottom: 20px;
+            ">
+                <h1 style="
+                    margin: 0;
+                    font-size: 2.2rem;
+                    font-weight: 900;
+                    background: linear-gradient(135deg, #ffd700, #d4af37, #ffd700);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    letter-spacing: 3px;
+                    text-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+                    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+                ">🎓 RAG DAY 2025</h1>
+                <p style="
+                    margin: 8px 0 0 0;
+                    font-size: 1.1rem;
+                    color: #d4af37;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                ">HAZERA-TAJU DEGREE COLLEGE</p>
+            </div>
+
+            <!-- Details Grid -->
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin-bottom: 15px;
+            ">
+                <!-- Email -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(138, 43, 226, 0.08));
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(212, 175, 55, 0.3);
+                    transition: all 0.3s ease;
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: #d4af37;
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">📧 Email</div>
+                    <div style="
+                        font-size: 0.8rem;
+                        color: #ffffff;
+                        font-weight: 600;
+                        word-break: break-all;
+                    ">${data.email}</div>
+                </div>
+
+                <!-- Mobile -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(138, 43, 226, 0.08));
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(212, 175, 55, 0.3);
+                    transition: all 0.3s ease;
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: #d4af37;
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">📱 Mobile</div>
+                    <div style="
+                        font-size: 0.95rem;
+                        color: #ffffff;
+                        font-weight: 700;
+                    ">${data.mobileNo}</div>
+                </div>
+
+                <!-- Roll/ID -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(138, 43, 226, 0.08));
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(212, 175, 55, 0.3);
+                    transition: all 0.3s ease;
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: #d4af37;
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">${type === 'student' ? '🎯 Roll Number' : '🆔 Unique ID'}</div>
+                    <div style="
+                        font-size: 0.95rem;
+                        color: #ffffff;
+                        font-weight: 700;
+                    ">${type === 'student' ? data.roll : data.uniqueId}</div>
+                </div>
+
+                ${type === 'student' ? `
+                <!-- Division/Section -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(138, 43, 226, 0.08));
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(212, 175, 55, 0.3);
+                    transition: all 0.3s ease;
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: #d4af37;
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">📚 Division / Section</div>
+                    <div style="
+                        font-size: 0.95rem;
+                        color: #ffffff;
+                        font-weight: 700;
+                    ">${data.division} / ${data.section}</div>
+                </div>
+                ` : ''}
+
+                <!-- Payment Status -->
+                <div style="
+                    background: ${isPaid ? 'linear-gradient(135deg, rgba(46, 213, 115, 0.2), rgba(39, 174, 96, 0.15))' : 'linear-gradient(135deg, rgba(255, 159, 67, 0.2), rgba(255, 107, 107, 0.15))'};
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 2px solid ${isPaid ? 'rgba(46, 213, 115, 0.5)' : 'rgba(255, 159, 67, 0.5)'};
+                    transition: all 0.3s ease;
+                    box-shadow: ${isPaid ? '0 0 20px rgba(46, 213, 115, 0.3)' : '0 0 20px rgba(255, 159, 67, 0.3)'};
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: ${isPaid ? '#2ed573' : '#ff9f43'};
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">💳 Payment Status</div>
+                    <div style="
+                        font-size: 1.05rem;
+                        color: ${isPaid ? '#2ed573' : '#ff9f43'};
+                        font-weight: 800;
+                    ">${isPaid ? '✅ PAID' : '⏳ PENDING'}</div>
+                </div>
+
+                <!-- Transaction ID -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(138, 43, 226, 0.08));
+                    padding: 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(212, 175, 55, 0.3);
+                    transition: all 0.3s ease;
+                ">
+                    <div style="
+                        font-size: 0.7rem;
+                        color: #d4af37;
+                        margin-bottom: 5px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">🔖 Transaction ID</div>
+                    <div style="
+                        font-size: 0.8rem;
+                        color: #ffffff;
+                        font-weight: 600;
+                        word-break: break-all;
+                    ">${data.transactionId || 'N/A'}</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="
+                display: flex;
+                gap: 10px;
+                margin-top: auto;
+            ">
+                ${type === 'student' ? `
+                <button onclick="downloadInvitationCard(${index}, '${type}')" style="
+                    flex: 1;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                ">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                ` : ''}
+                <button onclick="editItem(${index}, '${type}')" style="
+                    flex: 1;
+                    background: linear-gradient(135deg, #d4af37, #ffd700);
+                    color: #1a1a2e;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                ">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button onclick="deleteItem(${index}, '${type}')" style="
+                    flex: 1;
+                    background: linear-gradient(135deg, #e74c3c, #c0392b);
+                    color: white;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                ">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+
+            <!-- Registration Date -->
+            <div style="
+                text-align: center;
+                margin-top: 12px;
+                padding: 8px;
+                background: rgba(212, 175, 55, 0.05);
+                border-radius: 8px;
+                border: 1px solid rgba(212, 175, 55, 0.2);
+            ">
+                <span style="
+                    font-size: 0.7rem;
+                    color: #d4af37;
+                    font-weight: 600;
+                ">
+                    <i class="fas fa-calendar-check"></i> Registered: ${data.dateTime}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Gold Banner -->
+    <div style="
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        box-shadow: 0 -4px 15px rgba(212, 175, 55, 0.5);
+    ">
+        <span style="
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            letter-spacing: 2px;
+        ">🎉 WE LOOK FORWARD TO CELEBRATING WITH YOU 🎉</span>
+    </div>
+</div>
+
+<style>
+    .vip-invitation-card button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
+    }
+
+    .vip-invitation-card button:active {
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .vip-invitation-card {
+            aspect-ratio: auto !important;
+            min-height: 600px;
+        }
+        
+        .vip-invitation-card > div:nth-child(4) {
+            flex-direction: column !important;
+        }
+        
+        .vip-invitation-card > div:nth-child(4) > div:first-child {
+            border-right: none !important;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 20px;
+        }
+    }
+</style>
+    `;
+    
+    return div;
+}
+
+function editItem(index, type) {
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    const data = dataArray[index];
+    
+    editingItem = { index, type };
+    
+    if (type === 'admin') {
+        document.getElementById('adminName').value = data.name;
+        document.getElementById('adminEmail').value = data.email;
+        document.getElementById('adminUniqueId').value = data.uniqueId;
+        document.getElementById('adminMobile').value = data.mobileNo;
+        document.getElementById('adminPaymentMethod').value = data.paidBy;
+        document.getElementById('adminTransactionId').value = data.transactionId || '';
+        document.getElementById('adminCode').value = '';
+        toggleTransactionField('admin');
+        
+        document.getElementById('admin-page').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        document.getElementById('studentName').value = data.name;
+        document.getElementById('studentEmail').value = data.email;
+        document.getElementById('studentRoll').value = data.roll;
+        document.getElementById('studentDivision').value = data.division;
+        document.getElementById('studentSection').value = data.section;
+        document.getElementById('studentMobile').value = data.mobileNo;
+        document.getElementById('studentPaymentMethod').value = data.paidBy;
+        document.getElementById('studentTransactionId').value = data.transactionId || '';
+        toggleTransactionField('student');
+        
+        document.getElementById('student-page').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    showToast('Item loaded for editing', 'warning');
+}
+
+function deleteItem(index, type) {
+    const password = prompt('Enter password to delete this item:');
+    const correctPassword = 'eitaMojteHobe';
+    
+    if (password === null) {
+        showToast('Deletion cancelled', 'warning');
+        return;
+    }
+    
+    if (password !== correctPassword) {
+        showToast('Incorrect password. Item not deleted.', 'error');
+        return;
+    }
+    
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    dataArray.splice(index, 1);
+    
+    saveToLocalStorage(type + 's');
+    renderRegistrationList(type);
+    updateStats();
+    
+    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully`, 'success');
+}
+
+function printItem(index, type) {
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    const data = dataArray[index];
+    const uniqueId = type === 'admin' ? data.uniqueId : `${data.division}-${data.section}-${data.roll}`;
+    
+    const printContent = `
+        <div class="printable-content">
+            <div class="print-header">
+                <h1>HAZERA-TAJU DEGREE COLLEGE</h1>
+                <h2>Rag Day 2025 - Registration Card</h2>
+            </div>
+            
+            ${type === 'student' && data.profilePic ? `
+            <div class="print-profile">
+                <img src="${data.profilePic}" alt="Profile" class="print-avatar" style="width: 120px; height: 120px; border-radius: 50%; border: 2px solid #333; margin-bottom: 10px;">
+                <h3 style="margin: 0;">${data.name}</h3>
+            </div>
+            ` : `<h3 style="text-align: center; margin-bottom: 20px;">${data.name}</h3>`}
+            
+            <div class="print-info" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Unique ID:</span>
+                    <span>${uniqueId}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Email:</span>
+                    <span>${data.email}</span>
+                </div>
+                ${type === 'student' ? `
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Roll Number:</span>
+                    <span>${data.roll}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Division:</span>
+                    <span>${data.division}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Section:</span>
+                    <span>${data.section}</span>
+                </div>
+                ` : ''}
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Mobile Number:</span>
+                    <span>${data.mobileNo}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Payment Method:</span>
+                    <span>${data.paidBy}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Transaction ID:</span>
+                    <span>${data.transactionId || 'N/A'}</span>
+                </div>
+                <div class="print-field" style="display: flex; margin-bottom: 8px;">
+                    <span class="print-label" style="font-weight: bold; min-width: 140px; margin-right: 10px;">Registration Date:</span>
+                    <span>${data.dateTime}</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 10px; color: #666;">
+                <p>Developed by MK. Raju | rajumeherab2006@gmail.com</p>
+            </div>
+        </div>
+    `;
+    
+    openPrintWindow(printContent);
+}
+
+function printAllItems(type) {
+    const dataArray = type === 'admin' ? registeredAdmins : registeredStudents;
+    
+    if (dataArray.length === 0) {
+        showToast(`No ${type}s registered to print.`, 'warning');
+        return;
+    }
+    
+    let tableRows = '';
+    dataArray.forEach((data, index) => {
+        const uniqueId = type === 'admin' ? data.uniqueId : `${data.division}-${data.section}-${data.roll}`;
+        tableRows += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${data.name}</td>
+                <td>${data.email}</td>
+                <td>${uniqueId}</td>
+                <td>${data.mobileNo}</td>
+                <td>${data.paidBy}</td>
+                <td>${data.transactionId || 'N/A'}</td>
+            </tr>
+        `;
+    });
+    
+    const printContent = `
+        <div class="printable-content">
+            <div class="print-header">
+                <h1>HAZERA-TAJU DEGREE COLLEGE</h1>
+                <h2>Rag Day 2025 - ${type.charAt(0).toUpperCase() + type.slice(1)} Registration List</h2>
+                <p>Total Registered: ${dataArray.length}</p>
+            </div>
+            
+            <table class="print-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Sl.</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Name</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Email</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Unique ID</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Mobile</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Payment</th>
+                        <th style="border: 1px solid #333; padding: 8px; text-align: left; background-color: #f0f0f0;">Transaction ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 10px; color: #666;">
+                <p>Generated on ${new Date().toLocaleString()}</p>
+                <p>Developed by MK. Raju | rajumeherab2006@gmail.com</p>
+            </div>
+        </div>
+    `;
+    
+    openPrintWindow(printContent);
+}
+
+function openPrintWindow(content) {
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Print - HTDC Registration</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+                .printable-content { max-width: 800px; margin: 0 auto; }
+                .print-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+                .print-header h1 { margin: 0 0 10px 0; font-size: 24px; }
+                .print-header h2 { margin: 0 0 10px 0; font-size: 18px; color: #666; }
+                .print-profile { text-align: center; margin-bottom: 20px; }
+                .print-avatar { width: 120px; height: 120px; border-radius: 50%; border: 2px solid #333; margin-bottom: 10px; }
+                .print-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+                .print-field { display: flex; margin-bottom: 8px; }
+                .print-label { font-weight: bold; min-width: 140px; margin-right: 10px; }
+                .print-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                .print-table th, .print-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+                .print-table th { background-color: #f0f0f0; font-weight: bold; }
+                @media print {
+                    body { margin: 0; }
+                    .printable-content { margin: 0; }
+                }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    
+    printWindow.onload = function() {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.onafterprint = function() {
+            printWindow.close();
+        };
+    };
+}
+
+function filterRegistrations(type) {
+    const searchTerm = document.getElementById(type + 'Search').value.toLowerCase();
+    const items = document.querySelectorAll(`#${type}Items .registration-item`);
+    
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const shouldShow = text.includes(searchTerm);
+        item.style.display = shouldShow ? 'block' : 'none';
+    });
+}
+
+function updateStats() {
+    const totalStudents = registeredStudents.length;
+    const totalAdmins = registeredAdmins.length;
+    const totalPaid = registeredStudents.filter(s => s.paidBy !== 'None').length + 
+                    registeredAdmins.filter(a => a.paidBy !== 'None').length;
+    
+    document.getElementById('totalStudents').textContent = totalStudents;
+    document.getElementById('totalAdmins').textContent = totalAdmins;
+    document.getElementById('totalPaid').textContent = totalPaid;
+}
+
+function saveToLocalStorage(type) {
+    if (type === 'admins') {
+        localStorage.setItem('registeredAdmins', JSON.stringify(registeredAdmins));
+    } else if (type === 'students') {
+        localStorage.setItem('registeredStudents', JSON.stringify(registeredStudents));
+    }
+}
+
+function updateScrollProgress() {
+    const scrollProgress = document.getElementById('progressBar');
+    const progressValue = document.getElementById('progressValue');
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = Math.round((scrollTop / scrollHeight) * 100) || 0;
+    
+    scrollProgress.style.background = `conic-gradient(var(--primary-color) ${progress * 3.6}deg, var(--border-color) ${progress * 3.6}deg)`;
+    progressValue.textContent = progress + '%';
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showToast(message, type = 'success') {
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const icon = type === 'success' ? 'fas fa-check-circle' : 
+                type === 'error' ? 'fas fa-exclamation-circle' : 
+                'fas fa-info-circle';
+    
+    toast.innerHTML = `
+        <i class="toast-icon ${icon}"></i>
+        <div class="toast-content">
+            <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 400);
+        }
+    }, 5000);
+}
+
+// Close mobile menu on outside click
+document.addEventListener('click', function(e) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburgerBtn = document.querySelector('.hamburger-menu-02');
+    
+    if (!mobileMenu || !hamburgerBtn) return;
+    
+    if (mobileMenu.classList.contains('active') && 
+        !mobileMenu.contains(e.target) && 
+        !hamburgerBtn.contains(e.target)) {
+        toggleMobileMenu(hamburgerBtn);
+    }
+});
+
+// Close modal on outside click
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('codeModal');
+    if (e.target === modal) {
+        closeCodeModal();
+    }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+            case '1':
+                e.preventDefault();
+                showPage('home');
+                break;
+            case '2':
+                e.preventDefault();
+                showPage('admin');
+                break;
+            case '3':
+                e.preventDefault();
+                showPage('student');
+                break;
+            case '4':
+                e.preventDefault();
+                showPage('about');
+                break;
+        }
+    }
+    
+    if (e.key === 'Escape') {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+        
+        const modal = document.getElementById('codeModal');
+        if (modal && modal.classList.contains('active')) {
+            closeCodeModal();
+        }
+    }
+});
+    </script>
+</body>
+</html>
+
